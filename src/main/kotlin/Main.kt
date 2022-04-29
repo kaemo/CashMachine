@@ -2,7 +2,7 @@ fun main() {
 
     val users: List<Account> = listOf(
         Account("Damian", 1324),
-        Account("Pawel", 1337, 9972137.77),
+        Account("Michał", 1337, 9972137.77),
         Account("Jan", 2580, 100000.00)
     )
 
@@ -10,7 +10,7 @@ fun main() {
         """
         [Select user:]
         [1] Damian
-        [2] Pawel
+        [2] Michał
         [3] Jan
         User input: 
     """.trimIndent()
