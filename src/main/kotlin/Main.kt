@@ -1,34 +1,40 @@
+import kotlin.system.exitProcess
+
 fun main() {
 
-    val users: List<Account> = listOf(
+    val users = listOf<Account>(        //jest jakaś różnica pomiedzy tym sposobem deklaracji typu a wcześniejszym?
         Account("Damian", 1324),
         Account("Michał", 1337, 9972137.77),
-        Account("Jan", 2580, 100000.00)
+        Account("Jan", 2580, 100000.00),
+        Account("Przemek", 1111, 1234.00)
     )
 
-    print(
-        """
-        [Select user:]
-        [1] Damian
-        [2] Michał
-        [3] Jan
-        User input: 
-    """.trimIndent()
-    )
+    println("[Select user:]")
+
+    for (i in 0 until users.size) {
+        println("[${i+1}] ${users[i].name}")
+    }
+
+    print("User input: ")
 
     lateinit var selectedUser: Account
 
     val inputtedId = readln()
 
-    if (inputtedId.toIntOrNull() == null) {
-        // wrong input, show message
-    } else {
-        // try with id = 4
-        selectedUser = users.get(inputtedId.toInt()+1)
+    when (inputtedId.toIntOrNull()) {
+        null -> {
+            println("Invalid input! Try again later.")
+            exitProcess(0)
+        }
+        in 1..users.size -> selectedUser = users.get(inputtedId.toInt()-1)
+        else -> {
+            println("Value out of range! Try again later.")
+            exitProcess(0)
+        }
     }
 
     print("Enter your PIN: ")
-    selectedUser.pinCheck(readln().toShort())
+    selectedUser.pinCheck(readln().toInt())
 
     selectedUser.hello()
 
@@ -39,48 +45,35 @@ fun main() {
 }
 
 class Account {
-    constructor(n: String, p: Short, b: Double) {
+    constructor(n: String, p: Int, b: Double) {
         name = n
         pin = p
         balance = b
     }
 
-    constructor(n: String, p: Short) {
+    constructor(n: String, p: Int) {
         name = n
         pin = p
         balance = 0.0
     }
 
     val name: String
-    val pin: Short
+    val pin: Int
     var balance: Double
-
-    fun printWhole() {
-        println("Name: $name, PIN: $pin, Balance: $balance")
-    }
-
-    fun printName() {
-        println(name)
-    }
-
-    fun getGreetingForName(name: String): String {
-        return "Hello $name!"
-    }
 
     fun String.withOneAtTheEnd(): String { //this is extension function
         return this+"1"
         //sample usage: "test".withOneAtTheEnd() --> effect "test1"
     }
 
-    fun pinCheck(p: Short) {
-        val checkPin = p
-        if (checkPin == pin) {
+    fun pinCheck(p: Int) {
+        if (p == pin) {
             println("------------------------")
             println("Logged successfully!")
         } else {
             println("------------------------")
             println("Incorrect PIN! Try again later.")
-            System.exit(0)
+            exitProcess(0)
         }
     }
 
@@ -90,7 +83,7 @@ class Account {
     }
 
     fun showMenu() {
-        println(
+        print(
             """
         ------------------------
         [1] Check the balance
@@ -108,17 +101,17 @@ class Account {
             println("Total account balance: " + this.balance)
         } else if (decision == 2) {
             println("Under construction.")
-            System.exit(0)
+            exitProcess(0)
         } else if (decision == 3) {
             println("Under construction.")
-            System.exit(0)
+            exitProcess(0)
         } else if (decision == 4) {
             println("------------------------")
             println("Bye")
-            System.exit(0)
+            exitProcess(0)
         } else {
             println("Incorrect input. Bye")
-            System.exit(0)
+            exitProcess(0)
         }
     }
 }
