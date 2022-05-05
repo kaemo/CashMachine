@@ -2,17 +2,16 @@ import kotlin.system.exitProcess
 
 fun main() {
 
-    val users = listOf<Account>(        //jest jakaś różnica pomiedzy tym sposobem deklaracji typu a wcześniejszym?
-        Account("Damian", 1324),
-        Account("Michał", 1337, 9972137.77),
-        Account("Jan", 2580, 100000.00),
-        Account("Przemek", 1111, 1234.00)
+    val users = listOf<Account>(
+        Account("Adrian", "Paweł", "Wielki" , 1234),
+        Account("Michał", null, "Kowalski", 1337, 9972137.77),
+        Account("Jan", null, "Testowy", 2580, 100000.00)
     )
 
     println("[Select user:]")
 
     for (i in 0 until users.size) {
-        println("[${i+1}] ${users[i].name}")
+        println("[${i+1}] ${users[i].cFirstName}")
     }
 
     print("User input: ")
@@ -45,29 +44,39 @@ fun main() {
 }
 
 class Account {
-    constructor(n: String, p: Int, b: Double) {
-        name = n
-        pin = p
-        balance = b
+
+    constructor(firstName: String, secondName: String?, lastName: String, pin: Int, balance: Double) {
+        cFirstName = firstName
+        cSecondName = secondName
+        cLastName = lastName
+        cPin = pin
+        cBalance = balance
     }
 
-    constructor(n: String, p: Int) {
-        name = n
-        pin = p
-        balance = 0.0
+    constructor(firstName: String, secondName: String?, lastName: String, pin: Int) {
+        cFirstName = firstName
+        cSecondName = secondName
+        cLastName = lastName
+        cPin = pin
+        cBalance = 0.0
     }
 
-    val name: String
-    val pin: Int
-    var balance: Double
+    val cFirstName: String
+    val cSecondName: String?
+    val cLastName: String
+    val cPin: Int
+    var cBalance: Double
 
-    fun String.withOneAtTheEnd(): String { //this is extension function
-        return this+"1"
-        //sample usage: "test".withOneAtTheEnd() --> effect "test1"
+    fun Int.checkStrength(): String {
+        return when (this) {
+            1111, 2222, 3333, 4444, 5555, 6666, 7777, 8888, 9999 -> "low"
+            1234, 2345, 3456, 4567, 5678, 6789, 7890 -> "low"
+            else -> "OK"
+        }
     }
 
-    fun pinCheck(p: Int) {
-        if (p == pin) {
+    fun pinCheck(pin: Int) {
+        if (pin == cPin) {
             println("------------------------")
             println("Logged successfully!")
         } else {
@@ -79,7 +88,7 @@ class Account {
 
     fun hello() {
         println("------------------------")
-        println("Hello $name! What would you like to do? Choose from the menu below")
+        println("Hello $cFirstName! What would you like to do? Choose from the menu below")
     }
 
     fun showMenu() {
@@ -89,7 +98,8 @@ class Account {
         [1] Check the balance
         [2] Withdraw money
         [3] Deposit money
-        [4] Exit
+        [4] User data
+        [5] Exit
         User input: 
     """.trimIndent()
         )
@@ -98,7 +108,7 @@ class Account {
     fun action(decision: Int) {
         if (decision == 1) {
             println("------------------------")
-            println("Total account balance: " + this.balance)
+            println("Total account balance: " + cBalance)
         } else if (decision == 2) {
             println("Under construction.")
             exitProcess(0)
@@ -106,6 +116,19 @@ class Account {
             println("Under construction.")
             exitProcess(0)
         } else if (decision == 4) {
+            println("------------------------")
+
+            println("First name: " + cFirstName)
+
+            cSecondName?.let {
+                println("Second name: " + cSecondName)
+            } ?: println("Second name: -")
+
+            println("Last name: " + cLastName)
+
+            println("PIN strength: " + cPin.checkStrength())
+
+        } else if (decision == 5) {
             println("------------------------")
             println("Bye")
             exitProcess(0)
