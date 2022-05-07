@@ -11,7 +11,7 @@ fun main() {
     println("[Select user:]")
 
     for (i in 0 until users.size) {
-        println("[${i+1}] ${users[i].cFirstName}")
+        println("[${i+1}] ${users[i].firstName}")
     }
 
     print("User input: ")
@@ -43,29 +43,13 @@ fun main() {
     }
 }
 
-class Account {
-
-    constructor(firstName: String, secondName: String?, lastName: String, pin: Int, balance: Double) {
-        cFirstName = firstName
-        cSecondName = secondName
-        cLastName = lastName
-        cPin = pin
-        cBalance = balance
-    }
-
-    constructor(firstName: String, secondName: String?, lastName: String, pin: Int) {
-        cFirstName = firstName
-        cSecondName = secondName
-        cLastName = lastName
-        cPin = pin
-        cBalance = 0.0
-    }
-
-    val cFirstName: String
-    val cSecondName: String?
-    val cLastName: String
-    val cPin: Int
-    var cBalance: Double
+class Account (
+    val firstName: String,
+    val secondName: String?,
+    val lastName: String,
+    val pin: Int,
+    var balance: Double = 0.0
+) {
 
     fun Int.checkStrength(): String {
         return when (this) {
@@ -76,7 +60,7 @@ class Account {
     }
 
     fun pinCheck(pin: Int) {
-        if (pin == cPin) {
+        if (pin == this.pin) {
             println("------------------------")
             println("Logged successfully!")
         } else {
@@ -88,7 +72,7 @@ class Account {
 
     fun hello() {
         println("------------------------")
-        println("Hello $cFirstName! What would you like to do? Choose from the menu below")
+        println("Hello $firstName! What would you like to do? Choose from the menu below")
     }
 
     fun showMenu() {
@@ -108,7 +92,7 @@ class Account {
     fun action(decision: Int) {
         if (decision == 1) {
             println("------------------------")
-            println("Total account balance: " + cBalance)
+            println("Total account balance: " + balance)
         } else if (decision == 2) {
             println("Under construction.")
             exitProcess(0)
@@ -118,15 +102,13 @@ class Account {
         } else if (decision == 4) {
             println("------------------------")
 
-            println("First name: " + cFirstName)
+            println("First name: " + firstName)
 
-            cSecondName?.let {
-                println("Second name: " + cSecondName)
-            } ?: println("Second name: -")
+            println("Second name: " + (secondName?.let {it} ?: "-"))
 
-            println("Last name: " + cLastName)
+            println("Last name: " + lastName)
 
-            println("PIN strength: " + cPin.checkStrength())
+            println("PIN strength: " + pin.checkStrength())
 
         } else if (decision == 5) {
             println("------------------------")
