@@ -34,10 +34,11 @@ fun main() {
 
     print("Enter your PIN: ")
     selectedUser.pinCheck(readln().toInt())
-
-    selectedUser.hello()
+    selectedUser.printSeparator()
+    println(selectedUser.hello())
 
     while (true) {
+        selectedUser.printSeparator()
         selectedUser.showMenu()
         selectedUser.action(readln().toInt())
     }
@@ -61,24 +62,24 @@ class Account (
 
     fun pinCheck(pin: Int) {
         if (pin == this.pin) {
-            println("------------------------")
             println("Logged successfully!")
         } else {
-            println("------------------------")
             println("Incorrect PIN! Try again later.")
             exitProcess(0)
         }
     }
 
-    fun hello() {
+    fun hello(): String {
+        return "Hello $firstName! What would you like to do? Choose from the menu below"
+    }
+
+    fun printSeparator() {
         println("------------------------")
-        println("Hello $firstName! What would you like to do? Choose from the menu below")
     }
 
     fun showMenu() {
         print(
             """
-        ------------------------
         [1] Check the balance
         [2] Withdraw money
         [3] Deposit money
@@ -90,8 +91,8 @@ class Account (
     }
 
     fun action(decision: Int) {
+        printSeparator()
         if (decision == 1) {
-            println("------------------------")
             println("Total account balance: " + balance)
         } else if (decision == 2) {
             println("Under construction.")
@@ -100,18 +101,11 @@ class Account (
             println("Under construction.")
             exitProcess(0)
         } else if (decision == 4) {
-            println("------------------------")
-
             println("First name: " + firstName)
-
             println("Second name: " + (secondName?.let {it} ?: "-"))
-
             println("Last name: " + lastName)
-
             println("PIN strength: " + pin.checkStrength())
-
         } else if (decision == 5) {
-            println("------------------------")
             println("Bye")
             exitProcess(0)
         } else {
